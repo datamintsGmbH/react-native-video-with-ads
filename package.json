@@ -1,5 +1,5 @@
 {
-    "name": "@endemolshinegroup/react-native-video-with-ads",
+    "name": "react-native-video",
     "version": "0.0.1",
     "description": "A <Video /> element for react-native, with Ad support",
     "main": "Video.js",
