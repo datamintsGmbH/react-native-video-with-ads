@@ -70,6 +70,7 @@ static int const RCTVideoUnset = -1;
   UIViewController * _presentingViewController;
 
   /* Ads Loader */
+  BOOL _adsPlaying;
   IMAAdsLoader * _adsLoader;
   IMAAVPlayerContentPlayhead * _contentPlayhead;
   IMAAdsManager * _adsManager;
@@ -202,11 +203,17 @@ static int const RCTVideoUnset = -1;
 }
 
 - (void)adsManagerDidRequestContentPause:(IMAAdsManager *)adsManager {
+    _adsPlaying = TRUE;
+    [self applyModifiers];
+
     // The SDK is going to play ads, so pause the content.
     [_player pause];
 }
 
 - (void)adsManagerDidRequestContentResume:(IMAAdsManager *)adsManager {
+    _adsPlaying = FALSE;
+    [self applyModifiers];
+
     // The SDK is done playing ads (at least for now), so resume the content.
     [_player play];
 }
@@ -1253,6 +1260,8 @@ static int const RCTVideoUnset = -1;
 
 - (void)setControls:(BOOL)controls
 {
+  if( _adsPlaying ) return;
+
   if( _controls != controls || (!_playerLayer && !_playerViewController) )
   {
     _controls = controls;
